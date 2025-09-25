@@ -1,12 +1,19 @@
 export default async function handler(req, res) {
   try{
-        // Autoriser les appels depuis ton site WordPress (CORS)
-    res.setHeader('Access-Control-Allow-Origin', '*'); 
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    if (req.method === 'OPTIONS') {
-      return res.status(200).end();
-    }
+       // Autoriser les appels depuis ton site WordPress (CORS)
+const origin = req.headers.origin || "";
+const allowed = ["https://wil-et-merlin.com", "https://www.wil-et-merlin.com"];
+const allowOrigin = allowed.includes(origin) ? origin : allowed[0];
+
+res.setHeader("Access-Control-Allow-Origin", allowOrigin);
+res.setHeader("Vary", "Origin");
+res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+if (req.method === "OPTIONS") {
+  return res.status(200).end(); // pré-requête CORS
+}
+
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
     if(!OPENAI_API_KEY){
       return res.status(500).json({error:"Missing OPENAI_API_KEY"});
