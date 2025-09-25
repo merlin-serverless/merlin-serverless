@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "functions": { "api/merlin.js": { "runtime": "nodejs20.x" } },
+  "routes": [{ "src": "/api/merlin", "dest": "/api/merlin.js" }]
+}
